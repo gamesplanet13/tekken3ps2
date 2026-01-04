@@ -1,152 +1,86 @@
-<!DOCTYPE html><html lang="en">
+<!DOCTYPE html>
+<html lang="en">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Subscribe to Unlock (Protected Download)</title>
-  <style>
-    body { font-family: Arial, sans-serif; background: linear-gradient(to bottom,#f0f8ff,#e6ffe6); text-align:center; padding:40px }
-    h1 { color:#2c3e50 }
-    .button{display:inline-block;margin:15px;padding:15px 30px;background:#ff0000;color:#fff;border-radius:10px;text-decoration:none;font-size:18px;cursor:pointer}
-    .status{margin-top:5px;color:green;font-weight:bold}
-    .download-button{display:inline-block;margin-top:15px;padding:12px 28px;background:#007bff;color:#fff;border-radius:8px;text-decoration:none;font-size:18px;border:none;cursor:pointer}
-    .note{font-size:13px;color:#333;margin-top:12px}
-  </style>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Subscribe to Unlock</title>
+<style>
+body{
+  font-family:Arial,sans-serif;
+  background:linear-gradient(to bottom,#f0f8ff,#e6ffe6);
+  text-align:center;
+  padding:40px
+}
+h1{color:#2c3e50}
+.button{
+  display:inline-block;
+  margin:15px;
+  padding:15px 30px;
+  background:#ff0000;
+  color:#fff;
+  border-radius:10px;
+  text-decoration:none;
+  font-size:18px;
+  cursor:pointer
+}
+.status{color:green;font-weight:bold}
+.download-button{
+  margin-top:15px;
+  padding:12px 28px;
+  background:#007bff;
+  color:#fff;
+  border:none;
+  border-radius:8px;
+  font-size:18px;
+  cursor:pointer
+}
+</style>
 </head>
+
 <body>
-  <h1>🎮 Subscribe to All 3 Channels to Unlock Your Download</h1>  <div id="subscribeSection">
-    <a class="button" href="https://www.youtube.com/singhtechgaming?sub_confirmation=1" target="_blank" rel="noopener" onclick="markSubscribed(1)">Subscribe Singh Tech Gaming</a>
-    <div class="status" id="status1"></div><a class="button" href="https://www.youtube.com/@gamesplanet13?sub_confirmation=1" target="_blank" rel="noopener" onclick="markSubscribed(2)">Subscribe Games Planet 13</a>
-<div class="status" id="status2"></div>
 
-<a class="button" href="https://www.youtube.com/@gamesvallah?sub_confirmation=1" target="_blank" rel="noopener" onclick="markSubscribed(3)">Subscribe Games Vallah</a>
-<div class="status" id="status3"></div>
+<h1>🎮 Subscribe to All 3 Channels to Unlock Your Download</h1>
 
-  </div>  <div id="unlockSection" aria-live="polite" style="display:none;">
-    <p>✅ Thank you for subscribing!</p>
-    <p>You can open the file with the button below:</p><!--
-  IMPORTANT security note (read first):
-  - Anything included in client-side HTML/JS can be discovered by a determined user.
-  - Obfuscation (base64/xor/minification) only slows casual viewers; it does NOT prevent extraction.
-  - If you need the link to be truly hidden (cannot be discovered or shared indefinitely), you MUST use a server-side approach that issues short-lived or authenticated links (examples below).
+<div id="subscribeSection">
+  <a class="button" href="https://www.youtube.com/singhtechgaming?sub_confirmation=1" target="_blank" onclick="s(0)">
+    Subscribe Singh Tech Gaming
+  </a>
+  <div class="status" id="s0"></div>
 
-  This file provides two methods:
-  1) Preferred (secure): request a short-lived link from your server (see comments below). This requires you to host a small server endpoint that returns a signed/temporary URL.
-  2) Quick obfuscation (not secure): the Drive URL is obfuscated in JS and decoded at runtime. This only prevents "view source" casual copy — but is reversible.
--->
+  <a class="button" href="https://www.youtube.com/@gamesplanet13?sub_confirmation=1" target="_blank" onclick="s(1)">
+    Subscribe Games Planet 13
+  </a>
+  <div class="status" id="s1"></div>
 
-<!-- Button that will be wired to open the download link returned from the chosen method -->
-<button id="downloadBtn" class="download-button">Download</button>
-<p class="note">(The actual Google Drive URL is not stored in plain text in the HTML source.)</p>
+  <a class="button" href="https://www.youtube.com/@gamesvallah?sub_confirmation=1" target="_blank" onclick="s(2)">
+    Subscribe Games Vallah
+  </a>
+  <div class="status" id="s2"></div>
+</div>
 
-<div id="info" class="note"></div>
+<div id="unlockSection" style="display:none">
+  <p>✅ Thank you for subscribing!</p>
+  <button class="download-button" onclick="d()">Download</button>
+</div>
 
-  </div>  <script>
-    // UI-only subscribe tracking
-    let status = [false,false,false];
-    function markSubscribed(i){ status[i-1]=true; document.getElementById('status'+i).innerText = (i===1?'1st':i===2?'2nd':'3rd')+' done ✅'; if(status.every(Boolean)){ document.getElementById('subscribeSection').style.display='none'; document.getElementById('unlockSection').style.display='block'; }}
+<script>
+let a=[0,0,0];
+function s(i){
+  a[i]=1;
+  document.getElementById('s'+i).innerText='Done ✅';
+  if(a.every(v=>v)){
+    document.getElementById('subscribeSection').style.display='none';
+    document.getElementById('unlockSection').style.display='block';
+  }
+}
+function d(){
+  window.open(
+    "https://drive.google.com/file/d/1rVs7ytH5DY0rgaAAPu2AM0MFJepN4cVe/view?usp=sharing",
+    "_blank",
+    "noopener"
+  );
+}
+</script>
 
-    // ---------- Configuration: choose method ----------
-    // METHOD = "server"  -> safer, requires a server endpoint that returns a short-lived URL (recommended)
-    // METHOD = "obfuscate" -> client-side obfuscation (faster to deploy, NOT secure)
-    const METHOD = 'server'; // change to 'obfuscate' if you can't use a server
-
-    // ---------- Obfuscation data (only used if METHOD === 'obfuscate') ----------
-    // NOTE: This obfuscation is reversible. Do NOT rely on this to protect sensitive content.
-    // We store the real Drive ID obfuscated with base64 + simple xor mask.
-    // If you want to use this method, replace the obfuscated string below with your own.
-
-    // Example: original = 'https://drive.google.com/file/d/1rVs7ytH5DY0rgaAAPu2AM0MFJepN4cVe/view?usp=drive_link'
-    // We do: base64(xor(original, mask))
-    const obfuscated = 'PSEhJSZvenoxJzwjMHsyOjoyOTB7Njo4ejM8OTB6MXpkFzgREiNmAQBjFw0DByRlPBJtPg08BTQhEj8PZRsyPAZ6IzwwImogJiVoMSc8IzAmMT4='; // example placeholder (not the real link)
-    const xorMask = 0x55; // single-byte mask used for simple XOR
-
-    function decodeObfuscated(s){
-      try{
-        const raw = atob(s);
-        let out = '';
-        for(let i=0;i<raw.length;i++){
-          out += String.fromCharCode(raw.charCodeAt(i) ^ xorMask);
-        }
-        return out;
-      }catch(e){ return null; }
-    }
-
-    // ---------- Server method (recommended) ----------
-    // Server endpoint contract (example):
-    // GET /get-download  -> returns JSON { "url": "https://drive.google.com/uc?export=download&id=...", "expires_at": "2025-09-28T...Z" }
-    // - This endpoint should verify the request (e.g. check Referer or session cookie) and return a short-lived signed URL
-    // - If you host the file on Google Drive, you can use your backend to call Google Drive API to create a temporary access token or to proxy the file download
-    // - Alternatively use a CDN or signed URL feature (S3, Cloudflare, etc.) to produce time-limited links
-
-    async function fetchDownloadFromServer(){
-      // Replace '/get-download' with your real endpoint. It must implement CORS if you host it on another origin.
-      try{
-        const res = await fetch('/get-download', { method: 'GET', credentials: 'include' });
-        if(!res.ok) throw new Error('Server responded ' + res.status);
-        const j = await res.json();
-        if(!j.url) throw new Error('Invalid response from server');
-        return j.url;
-      }catch(e){
-        console.error(e);
-        throw e;
-      }
-    }
-
-    // Hook download button based on METHOD
-    const downloadBtn = document.getElementById('downloadBtn');
-    const info = document.getElementById('info');
-
-    downloadBtn.addEventListener('click', async function(){
-      downloadBtn.disabled = true;
-      info.innerText = 'Preparing download...';
-
-      try{
-        let finalUrl = null;
-        if(METHOD === 'server'){
-          // Try to get a short-lived link from your server
-          try{
-            finalUrl = await fetchDownloadFromServer();
-          }catch(err){
-            info.innerText = 'Server link failed — falling back to obfuscation (less secure).';
-            // fallback to obfuscation if server fails
-            finalUrl = decodeObfuscated(obfuscated);
-          }
-        } else {
-          // client-side obfuscation method
-          finalUrl = decodeObfuscated(obfuscated);
-        }
-
-        if(!finalUrl){
-          info.innerText = 'Could not obtain download link.';
-          downloadBtn.disabled = false;
-          return;
-        }
-
-        // Open the final URL in a new tab/window
-        window.open(finalUrl, '_blank', 'noopener');
-        info.innerText = 'Download opened in a new tab.';
-      }catch(e){
-        info.innerText = 'Error preparing download: ' + (e.message || e);
-        downloadBtn.disabled = false;
-      }
-    });
-
-    // Accessibility: allow Enter key to activate when visible
-    downloadBtn.addEventListener('keyup', function(e){ if(e.key === 'Enter') downloadBtn.click(); });
-
-    // End of script
-  </script>  <!--
-    Deployment notes / recommendations (summary):
-
-    1) Best (secure): implement a small server endpoint (/get-download) that:
-       - Authenticates/authorizes the request (session, token, referer check, captcha, etc.)
-       - Generates/returns a short-lived signed URL or proxies the download
-       - Example backends: Node/Express, PHP, Python Flask. Use Google Drive API or serve via your own storage and produce signed URLs.
-
-    2) If you must keep everything client-side: use obfuscation (like the example above). This only prevents casual "view source" copying — it cannot stop a determined user from extracting the URL.
-
-    3) For Google Drive specifically: a server can call Drive API to create a file permission limited to a specific time, or you can proxy the file through your server so the Drive link is never revealed to the user.
-
-    4) Legal/ethical: do not use obfuscation to distribute copyrighted content you do not own or have rights to share.
-  --></body>
+</body>
 </html>
